@@ -1,0 +1,32 @@
+﻿name: Update EdgeDriver
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_driver:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: |
+        npm install -g edge-driver
+
+    - name: Update EdgeDriver
+      run: |
+        edge-driver --install latest
+
+    - name: Copy EdgeDriver to Drivers Directory
+      run: |
+        mkdir -p bin/Debug/net8.0-windows7.0/Drivers/
+        copy edge-driver.exe bin/Debug/net8.0-windows7.0/Drivers/msedgedriver.exe
